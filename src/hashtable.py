@@ -93,14 +93,18 @@ class HashTable:
             print(f"Warning: node with key {key} not found")
             return
         else:
-            self.capacity -= 1
-            deleted_node = node.value
 
-            if prev is None:
-                node = None
+            if node.next is None and prev is None:
+                self.storage[index] = None
+            elif node.next is None and prev is not None:
+                # has to be prev.next and not node bc node is a reference???
+                prev.next = None
+            elif prev is None:
+                # node = node.next
+                self.storage[index] = node.next
             else:
-                prev.next = prev.next.next
-            return deleted_node
+                prev.next = node.next
+            # return deleted_node
 
 
     def retrieve(self, key):
@@ -132,8 +136,22 @@ class HashTable:
 
         Fill this in.
         '''
-        pass
+        original = self.storage
 
+        self.capacity *= 2
+        self.storage = [None] * self.capacity
+
+        for node in original:
+            # if node is not None and node.next is None:
+            #     self.insert(node.key, node.value)
+            # if node is not None and node.next is not None:
+            #     # index = self._hash_mod(node.key)
+            #     # self.storage[index] = node
+            #     self.insert(node.key, node.value)
+
+            while node is not None:
+                self.insert(node.key, node.value)
+                node = node.next
 
 
 if __name__ == "__main__":
