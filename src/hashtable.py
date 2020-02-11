@@ -51,7 +51,24 @@ class HashTable:
 
         Fill this in.
         '''
-        pass
+        #hash the key- hash is independent of array size, is reduced to an index between 0 and self.capacity - 1 w modulo
+        index = self._hash_mod(key)
+        
+        node = self.storage[index]
+        
+        if node is None:
+            self.storage[index] = LinkedPair(key, value)
+            return
+
+        prev = node
+        while node is not None:
+            if key == node.key:
+                node.value = value
+                return
+            prev = node
+            node = node.next
+            
+        prev.next = LinkedPair(key, value)
 
 
 
@@ -74,7 +91,18 @@ class HashTable:
 
         Fill this in.
         '''
-        pass
+        index = self._hash_mod(key)
+        
+        node = self.storage[index]
+
+        while node is not None:
+            if key == node.key:
+                return node.value
+
+            node = node.next
+            
+        return None
+
 
 
     def resize(self):
