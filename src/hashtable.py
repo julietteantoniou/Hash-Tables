@@ -80,7 +80,27 @@ class HashTable:
 
         Fill this in.
         '''
-        pass
+        index = self._hash_mod(key)
+        node = self.storage[index]
+        prev = None
+
+        # iterate through until node w correct key is found
+        while node is not None and node.key is not key:
+            prev = node
+            node = node.next
+
+        if node is None:
+            print(f"Warning: node with key {key} not found")
+            return
+        else:
+            self.capacity -= 1
+            deleted_node = node.value
+
+            if prev is None:
+                node = None
+            else:
+                prev.next = prev.next.next
+            return deleted_node
 
 
     def retrieve(self, key):
